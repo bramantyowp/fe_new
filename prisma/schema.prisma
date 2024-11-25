@@ -59,7 +59,7 @@ model users {
   id             Int       @id @default(autoincrement())
   fullname       String?   @db.VarChar
   email          String    @unique @db.VarChar(30)
-  password       String    @db.VarChar
+  password       String?   @db.VarChar
   address        String?   @db.VarChar
   gender         String?   @db.VarChar
   avatar         String?   @db.VarChar
@@ -69,6 +69,8 @@ model users {
   roleId         Int
   createdDt      DateTime? @default(now()) @db.Timestamp(6)
   updatedDt      DateTime? @updatedAt
+  googleId       String?
+  provider       String @default("local")
   createdBy      String?   @db.VarChar
   updatedBy      String?   @db.VarChar
   order          order[]
