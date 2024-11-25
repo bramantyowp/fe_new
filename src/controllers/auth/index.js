@@ -7,7 +7,8 @@ const { checkPassword, encryptPassword } = require("../../helpers/bcrypt");
 const { createToken } = require("../../helpers/jwt");
 const { authorize } = require("../../middlewares/authorization");
 const router = express.Router();
-
+const {getAuth,signInWithCredential,GoogleAuthProvider}= require("firebase/auth");
+const ServerError = require("../../helpers/errors/server");
 const user = new UserModel();
 
 const signUpSchema = Joi.object({
@@ -119,8 +120,24 @@ class AuthController extends BaseController {
       })
     );
   }
+  googleSignin = async (req, res, next) => {
+    const id_token =req.body.idToken;
+    const credential = GoogleAuthProvider.credential(id_token);
+    const auth = getAuth();
+    try { 
+      const signIn = await signInWithCredential(auth, credential);
+ console.log (signIn.user)
+ res.send ('COBA')   
+}catch (e) {
+  const erorCode =error.code;
+  const erorMessage = error.message;
+  const email = error.customData.email;
+  const credential =GoogleAuthProvider.credentialFromError(error);
+  console.log(credential)
+  next (new ServerError(e));
 }
-
+  }
+}
 new AuthController(user);
 
 module.exports = router;
