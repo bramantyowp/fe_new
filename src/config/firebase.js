@@ -1,4 +1,4 @@
-const firebaseApp = require ('firebase/app')
+const firebaseApp = require('firebase/app')
 const ENV = process.env
 
 const firebaseConfig = {
